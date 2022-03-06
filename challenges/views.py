@@ -17,29 +17,31 @@ monthly_challenges = {
     "december": "Master Django"
 }
 
+
+months = [
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december"
+]
+
 def numerical_monthly_challenge(_: HttpRequest, month: int):
     """
     Redirects to monthly_challenge if the number is between 1 and 12, otherwise
     sends a http not found response
     """
-    months = [
-        "january",
-        "february",
-        "march",
-        "april",
-        "may",
-        "june",
-        "july",
-        "august",
-        "september",
-        "october",
-        "november",
-        "december"
-    ]
     if 1 <= month <= 12:
         redirect_month = months[month - 1]
     else:
-        return HttpResponseNotFound("Invalid month")
+        return HttpResponseNotFound("<h1>Invalid month</h1>")
 
     redirect_path = reverse("monthly_challenge", args=[redirect_month])
     return HttpResponseRedirect(redirect_path)
@@ -48,6 +50,7 @@ def monthly_challenge(_: HttpRequest, month: str):
     """Sends the apopriate response for monthly challenges request"""
     try:
         challenge_text = monthly_challenges[month.lower()]
-        return HttpResponse(challenge_text)
+        response_data = "<h1>{challenge_text}</h1>".format(challenge_text=challenge_text)
+        return HttpResponse(response_data)
     except:
-        return HttpResponseNotFound("This month is not supported")
+        return HttpResponseNotFound("<h1>This month is not supported</h1>")

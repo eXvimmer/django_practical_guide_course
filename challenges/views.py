@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.http.response import HttpResponseNotFound, HttpResponseRedirect
 from django.urls.base import reverse
+from django.template.loader import render_to_string
 
 monthly_challenges = {
     "january": "Code every day",
@@ -14,7 +15,7 @@ monthly_challenges = {
     "september": "Celebrate your existence",
     "october": "Master TypeScript",
     "november": "Build a better website for yourself with NextJS",
-    "december": "Master Django"
+    "december": "Master Django",
 }
 
 months = [
@@ -29,8 +30,9 @@ months = [
     "september",
     "october",
     "november",
-    "december"
+    "december",
 ]
+
 
 def index(_: HttpRequest):
     month_list = "<ul>"
@@ -40,6 +42,7 @@ def index(_: HttpRequest):
     month_list += "</ul>"
 
     return HttpResponse(month_list)
+
 
 def numerical_monthly_challenge(_: HttpRequest, month: int):
     """
@@ -54,11 +57,12 @@ def numerical_monthly_challenge(_: HttpRequest, month: int):
     redirect_path = reverse("monthly_challenge", args=[redirect_month])
     return HttpResponseRedirect(redirect_path)
 
+
 def monthly_challenge(_: HttpRequest, month: str):
     """Sends the apopriate response for monthly challenges request"""
     try:
-        challenge_text = monthly_challenges[month.lower()]
-        response_data = "<h1>{challenge_text}</h1>".format(challenge_text=challenge_text)
+        # challenge_text = monthly_challenges[month.lower()]
+        response_data = render_to_string("challenges/challenge.html")
         return HttpResponse(response_data)
     except:
         return HttpResponseNotFound("<h1>This month is not supported</h1>")

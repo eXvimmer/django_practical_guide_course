@@ -34,14 +34,8 @@ months = [
 ]
 
 
-def index(_: HttpRequest):
-    month_list = "<ul>"
-    for month in months:
-        month_url = reverse("monthly_challenge", args=[month])
-        month_list += f'<li><a href="{month_url}">{month.capitalize()}</a></li>'
-    month_list += "</ul>"
-
-    return HttpResponse(month_list)
+def index(request: HttpRequest):
+    return render(request, "challenges/index.html", {"months": months})
 
 
 def numerical_monthly_challenge(_: HttpRequest, month: int):

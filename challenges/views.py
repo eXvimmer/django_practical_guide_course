@@ -61,7 +61,11 @@ def numerical_monthly_challenge(_: HttpRequest, month: int):
 def monthly_challenge(request: HttpRequest, month: str):
     """Sends the apopriate response for monthly challenges request"""
     try:
-        # challenge_text = monthly_challenges[month.lower()]
-        return render(request, "challenges/challenge.html")
+        challenge_text = monthly_challenges[month.lower()]
+        return render(
+            request,
+            "challenges/challenge.html",
+            {"text": challenge_text, "month": month.capitalize()},
+        )
     except:
         return HttpResponseNotFound("<h1>This month is not supported</h1>")

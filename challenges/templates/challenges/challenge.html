@@ -3,6 +3,8 @@
 {% block page_title %}{{ month|title }} Challenge{% endblock page_title %}
 
 {% block content %}
+    {% include "challenges/includes/header.html" %}
+
     <h1>{{ month|title }} challenge</h1>
     {% if text %}
         <p>{{ text }}</p>

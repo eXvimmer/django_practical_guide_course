@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest
 from django.http.response import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls.base import reverse
@@ -15,7 +15,7 @@ monthly_challenges = {
     "september": "Celebrate your existence",
     "october": "Master TypeScript",
     "november": "Build a better website for yourself with NextJS",
-    "december": "Master Django",
+    "december": None,  # no challenge for december
 }
 
 months = [

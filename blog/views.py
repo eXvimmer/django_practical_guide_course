@@ -1,10 +1,9 @@
 from django.http import HttpRequest
+from django.shortcuts import render
 
-# Create your views here.
 
-
-def starting_page(_: HttpRequest):
-    pass
+def starting_page(request: HttpRequest):
+    return render(request, "blog/index.html")
 
 
 def posts(_: HttpRequest):

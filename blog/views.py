@@ -6,8 +6,8 @@ def starting_page(request: HttpRequest):
     return render(request, "blog/index.html")
 
 
-def posts(_: HttpRequest):
-    pass
+def posts(request: HttpRequest):
+    return render(request, "blog/all-posts.html")
 
 
 def post_detail(_: HttpRequest):

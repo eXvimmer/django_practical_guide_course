@@ -80,8 +80,9 @@ def starting_page(request: HttpRequest):
 
 
 def posts(request: HttpRequest):
-    return render(request, "blog/all-posts.html")
+    return render(request, "blog/all-posts.html", {"all_posts": posts_data})
 
 
-def post_detail(request: HttpRequest, slug):
-    return render(request, "blog/post-detail.html")
+def post_detail(request: HttpRequest, slug: str):
+    post = next(post for post in posts_data if post["slug"] == slug)
+    return render(request, "blog/post-detail.html", {"post": post})

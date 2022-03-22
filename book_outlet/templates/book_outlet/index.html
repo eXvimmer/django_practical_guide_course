@@ -8,7 +8,7 @@
 {% block content %}
     <ul>
         {% for book in books %}
-            <li><a href="{% url "book-detail" book.id %}">{{ book.title }}</a> - (rating: {{ book.rating }})</li>
+            <li><a href="{{ book.get_absolute_url }}">{{ book.title }}</a> - (rating: {{ book.rating }})</li>
         {% endfor %}
     </ul>
 {% endblock content %}

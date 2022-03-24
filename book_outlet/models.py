@@ -1,7 +1,6 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
 
 
 class Book(models.Model):
@@ -11,14 +10,10 @@ class Book(models.Model):
     )
     author = models.CharField(null=True, max_length=100)
     is_bestseller = models.BooleanField(default=False)
-    slug = models.SlugField(default="", null=False, db_index=True)
+    slug = models.SlugField(default="", blank=True, null=False, db_index=True)
 
     def __str__(self):
         return f"{self.title} ({self.rating})"
 
     def get_absolute_url(self):
         return reverse("book-detail", args=[self.slug])  # type: ignore
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super().save(*args, **kwargs)

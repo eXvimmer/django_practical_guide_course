@@ -9,8 +9,8 @@ def index(request: HttpRequest):
     return render(request, "book_outlet/index.html", {"books": books})
 
 
-def book_detail(request: HttpRequest, id: int):
-    book = get_object_or_404(Book, pk=id)
+def book_detail(request: HttpRequest, slug: str):
+    book = get_object_or_404(Book, slug=slug)
     return render(
         request,
         "book_outlet/book_detail.html",

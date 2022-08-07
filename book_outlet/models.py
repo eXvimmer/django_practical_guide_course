@@ -3,6 +3,11 @@ from django.db import models
 from django.urls import reverse
 
 
+class Country(models.Model):
+    name = models.CharField(max_length=80)
+    code = models.CharField(max_length=2)
+
+
 class Address(models.Model):
     street = models.CharField(max_length=80)
     postal_code = models.CharField(max_length=20)
@@ -37,6 +42,7 @@ class Book(models.Model):
     )
     is_bestseller = models.BooleanField(default=False)  # type: ignore
     slug = models.SlugField(default="", blank=True, null=False, db_index=True)
+    published_countries = models.ManyToManyField(Country)
 
     def __str__(self):
         return f"{self.title} ({self.rating})"

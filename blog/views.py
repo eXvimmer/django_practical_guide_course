@@ -1,12 +1,6 @@
 from django.http import HttpRequest
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import Post
-
-posts_data = []
-
-
-def get_date(post):
-    return post["date"]
 
 
 def starting_page(request: HttpRequest):
@@ -16,9 +10,10 @@ def starting_page(request: HttpRequest):
 
 
 def posts(request: HttpRequest):
+    posts_data = Post.objects.all().order_by("-date")  # type: ignore
     return render(request, "blog/all-posts.html", {"all_posts": posts_data})
 
 
 def post_detail(request: HttpRequest, slug: str):
-    post = next(post for post in posts_data if post["slug"] == slug)
+    post = get_object_or_404(Post, slug=slug)
     return render(request, "blog/post-detail.html", {"post": post})

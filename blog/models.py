@@ -5,11 +5,20 @@ from django.core.validators import MinLengthValidator
 class Tag(models.Model):
     caption = models.CharField(max_length=32)
 
+    def __str__(self):
+        return self.caption
+
 
 class Author(models.Model):
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     email_address = models.EmailField()
+
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def __str__(self):
+        return self.full_name()
 
 
 class Post(models.Model):

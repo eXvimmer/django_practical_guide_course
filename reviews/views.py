@@ -11,9 +11,9 @@ def review(req: HttpRequest):
         if form.is_valid():
             print(form.cleaned_data)
             return HttpResponseRedirect("/thank-you")
-
+    else:
+        form = ReviewForm()
     # GET
-    form = ReviewForm()
     return render(req, "reviews/review.html", {"form": form})
 
 

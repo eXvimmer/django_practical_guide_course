@@ -1,17 +1,20 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
+from .forms import ReviewForm
 
-def review(request: HttpRequest):
-    if request.method == "POST":
-        name = request.POST["name"]
-        if not name:
-            return render(request, "reviews/review.html", {"has_error": True})
 
-        print(name)
-        return HttpResponseRedirect("/thank-you")
+def review(req: HttpRequest):
+    if req.method == "POST":
+        form = ReviewForm(req.POST)
+
+        if form.is_valid():
+            print(form.cleaned_data)
+            return HttpResponseRedirect("/thank-you")
+
     # GET
-    return render(request, "reviews/review.html", {"has_error": False})
+    form = ReviewForm()
+    return render(req, "reviews/review.html", {"form": form})
 
 
 def thank_you(req: HttpRequest) -> HttpResponse:

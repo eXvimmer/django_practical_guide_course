@@ -1,17 +1,15 @@
-from django.views.generic import DetailView, FormView, ListView, TemplateView
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
-from .models import Review
 from .forms import ReviewForm
+from .models import Review
 
 
-class ReviewView(FormView):
-    form_class = ReviewForm
+class ReviewView(CreateView):
+    Model = Review
+    # fields = "__all__"
+    form_class = ReviewForm  # NOTE: you can remove this completely
     template_name = "reviews/review.html"
     success_url = "thank-you"
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
 
 
 class ThankYouView(TemplateView):

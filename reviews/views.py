@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import ListView, TemplateView
 
 from .models import Review
 from .forms import ReviewForm
@@ -31,14 +31,16 @@ class ThankYouView(TemplateView):
         return context  # You should return the context
 
 
-class ReviewsListView(TemplateView):
+class ReviewsListView(ListView):
     template_name = "reviews/review_list.html"
+    model = Review
+    context_object_name = "reviews"  # instead of object_list
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        reviews = Review.objects.all()  # type: ignore
-        context["reviews"] = reviews
-        return context
+    # to narrow down the query (kinda like pagination)
+    # def get_queryset(self):
+    #     base_query = super().get_queryset()
+    #     data = base_query.filter(rating__gte=4)
+    #     return data
 
 
 class ReviewDetailView(TemplateView):

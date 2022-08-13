@@ -123,3 +123,6 @@ STATIC_URL = "/static/"
 
 # where files should be stored
 MEDIA_ROOT = BASE_DIR / "uploads"
+
+# expose files in this usrl
+MEDIA_URL = "/user-media/"

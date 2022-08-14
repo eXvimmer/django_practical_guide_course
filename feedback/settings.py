@@ -122,3 +122,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# how long a cookie and session should be valid (default is 2 weeks)
+# should be set in seconds (60 = 1 min)
+# SESSION_COOKIE_AGE = 60 * 24 * 7 * 2

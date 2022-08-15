@@ -32,3 +32,10 @@ class Post(models.Model):
         Author, on_delete=models.SET_NULL, related_name="posts", null=True
     )
     tags = models.ManyToManyField(Tag)  # null=True?
+
+
+class Comment(models.Model):
+    user_name = models.CharField(max_length=127)
+    user_email = models.EmailField()
+    text = models.TextField(max_length=400)
+    post = models.ForeignKey(to=Post, on_delete=models.CASCADE, related_name="comments")

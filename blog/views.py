@@ -1,4 +1,7 @@
-from django.views.generic import ListView, DetailView
+from django.http import HttpRequest, HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+from django.views.generic import ListView, View
 
 from .forms import CommentForm
 from .models import Post
@@ -22,12 +25,29 @@ class PostsView(ListView):
     ordering = ["-date"]
 
 
-class PostDetailView(DetailView):
-    model = Post
-    template_name = "blog/post-detail.html"
+class PostDetailView(View):
+    def get(self, request: HttpRequest, slug: str):
+        post = Post.objects.get(slug=slug)  # type: ignore
+        context = {
+            "post": post,
+            "post_tags": post.tags.all(),
+            "comment_form": CommentForm(),
+        }
+        return render(request, "blog/post-detail.html", context=context)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["post_tags"] = self.object.tags.all()
-        context["comment_form"] = CommentForm()
-        return context
+    def post(self, request: HttpRequest, slug: str):
+        comment_form = CommentForm(request.POST)
+        post = Post.objects.get(slug=slug)  # type: ignore
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return HttpResponseRedirect(reverse("post-detail-page", args=[slug]))
+        # else -> invalid form
+        context = {
+            "post": post,
+            "post_tags": post.tags.all(),
+            "comment_form": comment_form,
+        }
+        return render(request, "blog/post-detail.html", context=context)

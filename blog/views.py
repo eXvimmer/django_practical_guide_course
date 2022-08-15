@@ -1,21 +1,30 @@
-from django.http import HttpRequest
-from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView, DetailView
 from .models import Post
 
 
-def starting_page(request: HttpRequest):
-    # NOTE: Django does not support negative index (when slicing)
-    latest_posts = Post.objects.all().order_by("-date")[:3]  # type: ignore
-    return render(request, "blog/index.html", {"posts": latest_posts})
+class StartingPageView(ListView):
+    model = Post
+    template_name = "blog/index.html"
+    context_object_name = "posts"
+    ordering = ["-date"]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset[:3]
 
 
-def posts(request: HttpRequest):
-    posts_data = Post.objects.all().order_by("-date")  # type: ignore
-    return render(request, "blog/all-posts.html", {"all_posts": posts_data})
+class PostsView(ListView):
+    model = Post
+    template_name = "blog/all-posts.html"
+    context_object_name = "all_posts"
+    ordering = ["-date"]
 
 
-def post_detail(request: HttpRequest, slug: str):
-    post = get_object_or_404(Post, slug=slug)
-    return render(
-        request, "blog/post-detail.html", {"post": post, "post_tags": post.tags.all()}
-    )
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "blog/post-detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["post_tags"] = self.object.tags.all()
+        return context
